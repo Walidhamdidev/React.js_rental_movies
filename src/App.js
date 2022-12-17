@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import logger from "./services/logService";
+import auth from "./services/authService";
+import Movies from "./components/movies";
+import Navbar from "./components/navbar";
+import Customers from "./pages/customers";
+import Login from "./pages/login";
+import MovieForm from "./pages/movieForm";
+import NotFound from "./pages/notFound";
+import Register from "./pages/register";
+import Rentals from "./pages/rentals";
 
-function App() {
+logger.init();
+
+const App = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const currentUser = auth.currentUser();
+    setUser(currentUser);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container m-auto px-10">
+      <Navbar user={user} />
+      <Routes>
+        <Route path="/" element={<Navigate to="/movies" />} />
+        <Route path="/movies" element={<Movies user={user} />} />
+        <Route
+          path="/movies/new"
+          element={user ? <MovieForm /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/movies/:id"
+          element={user ? <MovieForm /> : <Navigate to="/login" />}
+        />
+        <Route path="/customers" element={<Customers />} />
+        <Route path="/rentals" element={<Rentals />} />
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/register"
+          element={!user ? <Register /> : <Navigate to="/" />}
+        />
+        <Route path="*" element={<Navigate to="notFound" />} />
+        <Route path="/notFound" element={<NotFound />} />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
