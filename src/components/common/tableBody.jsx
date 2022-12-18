@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React from "react";
 
-function TableBody({ data, columns }) {
+const TableBody = ({ data, columns }) => {
   const renderCell = (item, column) => {
     return column.content ? column.content(item) : _.get(item, column.path);
   };
@@ -28,6 +28,6 @@ function TableBody({ data, columns }) {
       })}
     </tbody>
   );
-}
+};
 
 export default TableBody;

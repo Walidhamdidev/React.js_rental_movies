@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class TableHeader extends Component {
-  raiseSort = (path) => {
-    const sortColumn = { ...this.props.sortColumn };
+const TableHeader = ({ sortColumn: sortColumnProp, onSort, columns }) => {
+  const raiseSort = (path) => {
+    const sortColumn = { ...sortColumnProp };
     if (sortColumn.path === path)
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
     else {
@@ -10,33 +10,34 @@ export default class TableHeader extends Component {
       sortColumn.order = "asc";
     }
 
-    this.props.onSort(sortColumn);
+    onSort(sortColumn);
   };
 
-  renderSortIcon = (column) => {
-    if (column.path !== this.props.sortColumn.path) return null;
-    if (this.props.sortColumn.path.order === "asc") return <p>ASC</p>;
-    else return <p>DESC</p>;
+  const renderSortIcon = (column) => {
+    if (column.path !== sortColumnProp.path) return null;
+    if (sortColumnProp.path.order === "asc")
+      return <ion-icon name="chevron-down-outline"></ion-icon>;
+    else return <ion-icon name="chevron-up-outline"></ion-icon>;
   };
 
-  render() {
-    return (
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          {this.props.columns.map((column) => {
-            return (
-              <th
-                scope="col"
-                className="py-3 px-6 cursor-pointer"
-                key={column.path || column.key}
-                onClick={() => this.raiseSort(column.path)}
-              >
-                {column.label} {this.renderSortIcon(column)}
-              </th>
-            );
-          })}
-        </tr>
-      </thead>
-    );
-  }
-}
+  return (
+    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        {columns.map((column) => {
+          return (
+            <th
+              scope="col"
+              className="py-3 px-6 cursor-pointer"
+              key={column.path || column.key}
+              onClick={() => raiseSort(column.path)}
+            >
+              {column.label} {renderSortIcon(column)}
+            </th>
+          );
+        })}
+      </tr>
+    </thead>
+  );
+};
+
+export default TableHeader;

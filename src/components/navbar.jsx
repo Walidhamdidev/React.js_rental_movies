@@ -1,7 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import auth from "../services/authService";
+import { useState } from "react";
 
-export default function Navbar({ user }) {
+const Navbar = ({ user }) => {
+  let [open, setOpen] = useState(false);
   const location = useLocation();
 
   const checkLocation = (path) => {
@@ -12,121 +14,73 @@ export default function Navbar({ user }) {
     auth.logout();
     window.location = "/";
   };
-
-  const renderUserInfo = () => {
-    return !user ? (
-      <>
-        {" "}
-        <li>
-          <Link
-            to="/login"
-            className={`block py-2 pl-3 pr-4 ${checkLocation(
-              "/login"
-            )} rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
-          >
-            Login
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/register"
-            className={`block py-2 pl-3 pr-4 ${checkLocation(
-              "/register"
-            )} rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
-          >
-            Register
-          </Link>
-        </li>
-      </>
-    ) : (
-      <>
-        <span className="ml-4 px-4 rounded-md self-center text-2xl bg-red-400 text-white font-bold whitespace-nowrap dark:text-white">
-          {user.username}
-        </span>
-        <li>
-          <Link
-            onClick={handleLogout}
-            className="rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-          >
-            Logout
-          </Link>
-        </li>
-      </>
-    );
-  };
+  let Links = user
+    ? [
+        { name: "Home", link: "/movies" },
+        { name: "Customers", link: "/customers" },
+        { name: "Rentals", link: "/rentals" },
+        {
+          name: "Logout",
+          link: "/movies",
+          onClick: () => handleLogout(),
+        },
+        {
+          name: user.username.charAt(0).toUpperCase() + user.username.slice(1),
+          link: "/movies",
+          onClick: () => console.log(user, "SETTINGS PROFILE"),
+          classes: "bg-yellow-500 p-2 rounded-md",
+        },
+      ]
+    : [
+        { name: "Home", link: "/movies" },
+        { name: "Customers", link: "/customers" },
+        { name: "Rentals", link: "/rentals" },
+        { name: "Login", link: "/login" },
+        { name: "Register", link: "/register" },
+      ];
 
   return (
-    <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
-      <div className="container flex flex-wrap items-center justify-between mx-auto">
-        <Link to="/" className="flex items-center">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-6 mr-3 sm:h-9"
-            alt="Movie Rental Logo"
-          />
-          <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-            Movie Rental
-          </span>
-        </Link>
-        <button
-          data-collapse-toggle="navbar-default"
-          type="button"
-          className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          aria-expanded="false"
+    <div className="shadow-md w-full fixed top-0 left-0">
+      <div className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
+        <div
+          className="font-bold text-2xl cursor-pointer flex items-center font-[Poppins] 
+    text-gray-800"
         >
-          <span className="sr-only">Open main menu</span>
-          <svg
-            className="w-6 h-6"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        </button>
-        <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            <li>
-              <Link
-                to="/"
-                className={`block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent ${checkLocation(
-                  "/movies"
-                )} md:p-0 dark:text-white`}
-                aria-current="page"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/customers"
-                className={`block py-2 pl-3 pr-4 ${checkLocation(
-                  "/customers"
-                )} rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
-              >
-                Customers
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/rentals"
-                className={`block py-2 pl-3 pr-4 ${checkLocation(
-                  "/rentals"
-                )} rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}
-              >
-                Rentals
-              </Link>
-            </li>
-            {renderUserInfo()}
-          </ul>
+          <span className="text-3xl text-indigo-600 mr-1 pt-2">
+            <ion-icon name="logo-ionic"></ion-icon>
+          </span>
+          <Link to="/movies">Movie Rental</Link>
         </div>
+
+        <div
+          onClick={() => setOpen(!open)}
+          className="text-3xl absolute right-8 top-6 cursor-pointer md:hidden"
+        >
+          <ion-icon name={open ? "close" : "menu"}></ion-icon>
+        </div>
+
+        <ul
+          className={` md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
+            open ? "top-20 " : "top-[-490px]"
+          }`}
+        >
+          {Links.map(({ link, name, classes, onClick }) => (
+            <li key={name} className="md:ml-8 text-xl md:my-0 my-7">
+              <Link
+                to={link}
+                onClick={onClick}
+                className={` cursor-pointer text-gray-800 hover:text-gray-400 duration-500 ${checkLocation(
+                  link
+                )} ${classes}`}
+              >
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-    </nav>
+    </div>
   );
-}
+};
+
+export default Navbar;

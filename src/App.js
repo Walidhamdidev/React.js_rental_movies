@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import logger from "./services/logService";
-import auth from "./services/authService";
 import Movies from "./components/movies";
 import Navbar from "./components/navbar";
 import Customers from "./pages/customers";
@@ -10,16 +9,12 @@ import MovieForm from "./pages/movieForm";
 import NotFound from "./pages/notFound";
 import Register from "./pages/register";
 import Rentals from "./pages/rentals";
+import UserContext from "./context/userContext";
 
 logger.init();
 
 const App = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const currentUser = auth.currentUser();
-    setUser(currentUser);
-  }, []);
+  const { currentUser: user } = useContext(UserContext);
 
   return (
     <div className="container m-auto px-10">

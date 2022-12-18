@@ -25,6 +25,10 @@ class MovieForm extends Form {
   // register show message if the username already in the field of username
   // make reusable protectedRouteComponent
   // refacture the implementation of delete and link when auth
+  // responsive layouts
+  // testing
+  // storybook
+  // advanced section
 
   schema = {
     _id: Joi.string(),

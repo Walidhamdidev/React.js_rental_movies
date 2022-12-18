@@ -1,6 +1,6 @@
 import React from "react";
 
-function Select({ name, label, error, options, ...reset }) {
+const Select = ({ name, label, error, options, ...reset }) => {
   return (
     <div>
       <label
@@ -32,6 +32,6 @@ function Select({ name, label, error, options, ...reset }) {
       )}
     </div>
   );
-}
+};
 
 export default Select;

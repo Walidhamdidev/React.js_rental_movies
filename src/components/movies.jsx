@@ -6,7 +6,7 @@ import { getGenres } from "../services/genreService";
 import { deleteMovie, getMovies } from "../services/movieService";
 import { pagination } from "../utils/pagination";
 import ListGroup from "./common/listGroup";
-import { SearchBox } from "./common/searchBox";
+import SearchBox from "./common/searchBox";
 import MoviesTable from "./moviesTable";
 import Pagination from "./pagination";
 
@@ -125,7 +125,7 @@ export class Movies extends Component {
     const { totalCount, data: movies } = this.getPagedData();
 
     return (
-      <div className="flex justify-center	justify-items-center	 gap-5">
+      <div className="md:flex justify-center	justify-items-center	 gap-5">
         <div className="mt-4">
           <ListGroup
             items={genres}
@@ -135,19 +135,19 @@ export class Movies extends Component {
         </div>
         <div>
           <div>
+            {user && (
+              <Link
+                to="/movies/new"
+                className="inline-block mt-4 text-white  bg-blue-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                New Movie
+              </Link>
+            )}
             {movieLength === 0 ? (
               <h1>There is no movies</h1>
             ) : (
               <>
-                {user && (
-                  <Link
-                    to="/movies/new"
-                    className="inline-block my-4 text-white  bg-blue-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >
-                    New Movie
-                  </Link>
-                )}
-                <h1>There is {totalCount} movies</h1>
+                <h1 className="my-2">There is {totalCount} movies</h1>
 
                 <SearchBox
                   value={searchQuery}

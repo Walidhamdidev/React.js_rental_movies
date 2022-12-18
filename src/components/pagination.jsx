@@ -1,11 +1,9 @@
 import _ from "lodash";
-import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-export default class Pagination extends Component {
-  getPageNumber = () => {
-    const { itemsCount, pageSize, currentPage, onChangePage } = this.props;
+const Pagination = ({ itemsCount, pageSize, currentPage, onChangePage }) => {
+  const getPageNumber = () => {
     const pagesCount = Math.ceil(itemsCount / pageSize);
     if (pagesCount === 1) return null;
     const pages = _.range(1, pagesCount + 1);
@@ -36,14 +34,12 @@ export default class Pagination extends Component {
     });
   };
 
-  render() {
-    return (
-      <nav aria-label="Page navigation example">
-        <ul className="inline-flex -space-x-px">{this.getPageNumber()}</ul>
-      </nav>
-    );
-  }
-}
+  return (
+    <nav aria-label="Page navigation example">
+      <ul className="inline-flex -space-x-px">{getPageNumber()}</ul>
+    </nav>
+  );
+};
 
 Pagination.propTypes = {
   itemsCount: PropTypes.number.isRequired,
@@ -51,3 +47,5 @@ Pagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
 };
+
+export default Pagination;
