@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { BeatLoader } from "react-spinners";
 import { getGenres } from "../services/genreService";
 import { deleteMovie, getMovies } from "../services/movieService";
 import { pagination } from "../utils/pagination";
@@ -19,13 +20,22 @@ export class Movies extends Component {
     selectedGenre: null,
     sortColumn: { path: "title", order: "asc" },
     searchQuery: "",
+    loading: false,
   };
 
   async componentDidMount() {
+    this.setState({
+      loading: true,
+    });
+
     const genres = [{ _id: "", name: "All Genres" }, ...(await getGenres())];
     this.setState({
       movies: await getMovies(),
       genres,
+    });
+
+    this.setState({
+      loading: false,
     });
   }
 
@@ -117,6 +127,7 @@ export class Movies extends Component {
       selectedGenre,
       sortColumn,
       searchQuery,
+      loading,
     } = this.state;
     const { user } = this.props;
 
@@ -127,11 +138,17 @@ export class Movies extends Component {
     return (
       <div className="md:flex justify-center	justify-items-center	 gap-5">
         <div className="mt-4">
-          <ListGroup
-            items={genres}
-            onItemSelect={this.handleGenreSelect}
-            selectedGenre={selectedGenre}
-          />
+          {!loading ? (
+            <ListGroup
+              items={genres}
+              onItemSelect={this.handleGenreSelect}
+              selectedGenre={selectedGenre}
+            />
+          ) : (
+            <div className="m-10">
+              <BeatLoader color={"#123abc"} loading={loading} />
+            </div>
+          )}
         </div>
         <div>
           <div>
@@ -143,26 +160,33 @@ export class Movies extends Component {
                 New Movie
               </Link>
             )}
-            {movieLength === 0 ? (
-              <h1>There is no movies</h1>
+
+            {!loading ? (
+              movieLength === 0 ? (
+                <h1>There is no movies</h1>
+              ) : (
+                <>
+                  <h1 className="my-2">There is {totalCount} movies</h1>
+
+                  <SearchBox
+                    value={searchQuery}
+                    onChange={this.handleSearchChange}
+                  />
+
+                  <MoviesTable
+                    user={user}
+                    movies={movies}
+                    onLike={this.handleLike}
+                    onDelete={this.handleDelete}
+                    onSort={this.handleSort}
+                    sortColumn={sortColumn}
+                  />
+                </>
+              )
             ) : (
-              <>
-                <h1 className="my-2">There is {totalCount} movies</h1>
-
-                <SearchBox
-                  value={searchQuery}
-                  onChange={this.handleSearchChange}
-                />
-
-                <MoviesTable
-                  user={user}
-                  movies={movies}
-                  onLike={this.handleLike}
-                  onDelete={this.handleDelete}
-                  onSort={this.handleSort}
-                  sortColumn={sortColumn}
-                />
-              </>
+              <div className="m-10">
+                <BeatLoader color={"#123abc"} loading={loading} />
+              </div>
             )}
           </div>
 

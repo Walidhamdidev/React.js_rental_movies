@@ -26,21 +26,23 @@ const MoviesTable = ({ movies, onSort, sortColumn, onLike, onDelete }) => {
     { path: "dailyRentalRate", label: "Rate" },
     {
       key: "like",
-      content: (item) => <Like like={item.liked} onLike={() => onLike(item)} />,
+      content: (item) => {
+        return user ? (
+          <Like like={item.liked} onLike={() => onLike(item)} />
+        ) : null;
+      },
     },
     {
       key: "delete",
       content: (item) => {
-        return (
-          user && (
-            <button
-              className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              onClick={() => onDelete(item)}
-            >
-              Delete
-            </button>
-          )
-        );
+        return user ? (
+          <button
+            className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            onClick={() => onDelete(item)}
+          >
+            Delete
+          </button>
+        ) : null;
       },
     },
   ];

@@ -11,11 +11,15 @@ export const getMovies = async () => {
   return data.map((item) => {
     const attr = item["attributes"];
     const genre = attr["genre"]["data"];
+    const genreObj = {
+      _id: genre?.id.toString(),
+      name: genre["attributes"]["name"],
+    };
 
     return {
       _id: item.id.toString(),
       title: attr["title"],
-      genre: { _id: genre?.id.toString(), name: genre["attributes"]["name"] },
+      genre: genreObj,
       numberInStock: attr["numberInStock"],
       dailyRentalRate: attr["dailyRentalRate"],
       liked: attr["liked"],

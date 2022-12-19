@@ -4,11 +4,13 @@ import Joi from "joi-browser";
 import Form from "../components/common/form";
 import auth from "../services/authService";
 import { withRouter } from "../hooks/withRouter";
+import { BeatLoader } from "react-spinners";
 
 class Register extends Form {
   state = {
     data: { email: "", password: "", name: "" },
     errors: {},
+    loading: false,
   };
 
   schema = {
@@ -19,10 +21,19 @@ class Register extends Form {
 
   doSubmit = async () => {
     try {
+      this.setState({
+        loading: true,
+      });
       await auth.register(this.state.data);
+      this.setState({
+        loading: false,
+      });
       window.location = "/";
       // this.props.router.navigate("/movies", { replace: true });
     } catch (e) {
+      this.setState({
+        loading: false,
+      });
       if (e.response && e.response.status === 400) {
         const errors = { ...this.state.errors };
         errors.email = e.response.data.error.message;
@@ -34,6 +45,7 @@ class Register extends Form {
   };
 
   render() {
+    const { loading } = this.state;
     return (
       <div className="flex flex-col items-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -77,7 +89,12 @@ class Register extends Form {
                   Forgot password?
                 </Link>
               </div>
-              {this.renderButton("Register")}
+              {!loading ? (
+                this.renderButton("Register")
+              ) : (
+                <BeatLoader loading={loading} color={"#123abc"} />
+              )}
+
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Do already have an account
                 <Link

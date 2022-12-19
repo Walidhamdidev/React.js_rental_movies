@@ -4,6 +4,7 @@ import { useState } from "react";
 
 const Navbar = ({ user }) => {
   let [open, setOpen] = useState(false);
+
   const location = useLocation();
 
   const checkLocation = (path) => {
@@ -28,7 +29,8 @@ const Navbar = ({ user }) => {
           name: user.username.charAt(0).toUpperCase() + user.username.slice(1),
           link: "/movies",
           onClick: () => console.log(user, "SETTINGS PROFILE"),
-          classes: "bg-yellow-500 p-2 rounded-md",
+          classes: "bg-black py-2 px-4  rounded-md",
+          styles: { color: "white" },
         },
       ]
     : [
@@ -64,11 +66,16 @@ const Navbar = ({ user }) => {
             open ? "top-20 " : "top-[-490px]"
           }`}
         >
-          {Links.map(({ link, name, classes, onClick }) => (
-            <li key={name} className="md:ml-8 text-xl md:my-0 my-7">
+          {Links.map(({ link, name, classes, styles, onClick }) => (
+            <li
+              onClick={() => setOpen(false)}
+              key={name}
+              className="md:ml-8 text-xl md:my-0 my-7"
+            >
               <Link
                 to={link}
                 onClick={onClick}
+                style={styles}
                 className={` cursor-pointer text-gray-800 hover:text-gray-400 duration-500 ${checkLocation(
                   link
                 )} ${classes}`}
