@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import UserContext from "./context/userContext";
 import auth from "./services/authService";
 import { useEffect, useState } from "react";
-import Layout from "./components/common/layout";
+import Layout from "./common/layout";
 
 const Index = () => {
   const [user, setUser] = useState(null);

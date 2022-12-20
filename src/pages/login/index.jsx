@@ -1,14 +1,13 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Joi from "joi-browser";
-import Form from "../components/common/form";
-import auth from "../services/authService";
-import { withRouter } from "../hooks/withRouter";
+import Form from "../../common/form";
+import auth from "../../services/authService";
+import { withRouter } from "../../hooks/withRouter";
 import { BeatLoader } from "react-spinners";
 
-class Register extends Form {
+class Login extends Form {
   state = {
-    data: { email: "", password: "", name: "" },
+    data: { email: "", password: "" },
     errors: {},
     loading: false,
   };
@@ -16,7 +15,6 @@ class Register extends Form {
   schema = {
     email: Joi.string().email().required().label("Email"),
     password: Joi.string().required().min(6).max(10).label("Password"),
-    name: Joi.string().required().min(3).max(10).label("Name"),
   };
 
   doSubmit = async () => {
@@ -24,7 +22,7 @@ class Register extends Form {
       this.setState({
         loading: true,
       });
-      await auth.register(this.state.data);
+      await auth.login(this.state.data);
       this.setState({
         loading: false,
       });
@@ -34,9 +32,11 @@ class Register extends Form {
       this.setState({
         loading: false,
       });
+
       if (e.response && e.response.status === 400) {
         const errors = { ...this.state.errors };
-        errors.email = e.response.data.error.message;
+        const error = e.response.data.error.message;
+        errors.email = error;
         this.setState({
           errors,
         });
@@ -44,14 +44,41 @@ class Register extends Form {
     }
   };
 
+  handleSignInWithGoogle = async () => {
+    try {
+      // this.setState({
+      //   loading: true,
+      // });
+      await auth.signInWithGoogle();
+      // this.setState({
+      //   loading: false,
+      // });
+      // window.location = "/";
+      // this.props.router.navigate("/movies", { replace: true });
+    } catch (e) {
+      // this.setState({
+      //   loading: false,
+      // });
+      console.log(e);
+      if (e.response && e.response.status === 400) {
+        // const errors = { ...this.state.errors };
+        // errors.email = e.response.data.error.message;
+        console.log(e.response.data);
+        // this.setState({
+        //   errors,
+        // });
+      }
+    }
+  };
+
   render() {
     const { loading } = this.state;
     return (
-      <div className="flex flex-col items-center  px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div className="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create new account
+              Sign in to your data
             </h1>
             <form
               onSubmit={this.handleSubmit}
@@ -60,11 +87,10 @@ class Register extends Form {
             >
               {this.renderInput("email", "Email", "email")}
               {this.renderInput("password", "Password", "password")}
-              {this.renderInput("name", "Name")}
 
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
-                  <div className="flex items-center h-5">
+                  {/* <div className="flex items-center h-5">
                     <input
                       id="remember"
                       aria-describedby="remember"
@@ -80,7 +106,7 @@ class Register extends Form {
                     >
                       Remember me
                     </label>
-                  </div>
+                  </div> */}
                 </div>
                 <Link
                   to="/forgetPassword"
@@ -89,19 +115,26 @@ class Register extends Form {
                   Forgot password?
                 </Link>
               </div>
+
               {!loading ? (
-                this.renderButton("Register")
+                <>
+                  {this.renderButton("Sign in")}{" "}
+                  {this.renderSocialMediaButton(
+                    "Sign in with Google",
+                    "logo-google",
+                    this.handleSignInWithGoogle
+                  )}
+                </>
               ) : (
                 <BeatLoader loading={loading} color={"#123abc"} />
               )}
-
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Do already have an account
+              <p className=" text-sm font-light text-gray-500 dark:text-gray-400">
+                Don’t have an account yet?
                 <Link
-                  to="/login"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  to="/register"
+                  className="ml-2 font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Login
+                  Sign Up
                 </Link>
               </p>
             </form>
@@ -112,4 +145,4 @@ class Register extends Form {
   }
 }
 
-export default withRouter(Register);
+export default withRouter(Login);

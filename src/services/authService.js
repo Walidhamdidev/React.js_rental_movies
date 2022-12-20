@@ -55,6 +55,15 @@ const logout = () => {
   localStorage.removeItem(keyAuthLocalStorage);
 };
 
+const signUpWithGoogle = async () => {
+  console.log("Sign Up with google");
+};
+const signInWithGoogle = async () => {
+  const { data } = http.get("/api/auth/google/callback");
+  console.log("Data", data);
+  console.log("Sign In with google");
+};
+
 const defaultExports = {
   login,
   getJWT,
@@ -62,6 +71,8 @@ const defaultExports = {
   register,
   currentUser,
   logout,
+  signUpWithGoogle,
+  signInWithGoogle,
 };
 
 export default defaultExports;

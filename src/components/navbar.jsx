@@ -1,11 +1,26 @@
 import { Link, useLocation } from "react-router-dom";
 import auth from "../services/authService";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Navbar = ({ user }) => {
   let [open, setOpen] = useState(false);
 
   const location = useLocation();
+  const nav = useRef();
+
+  useEffect(() => {
+    const handler = (event) => {
+      if (!nav.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
 
   const checkLocation = (path) => {
     return location.pathname === path ? "md:text-blue-600" : "md:text-black";
@@ -21,24 +36,31 @@ const Navbar = ({ user }) => {
         { name: "Customers", link: "/customers" },
         { name: "Rentals", link: "/rentals" },
         {
-          name: "Logout",
+          name: "Sign out",
           link: "/movies",
           onClick: () => handleLogout(),
+          styles: {
+            backgroundColor: "black",
+            opacity: 0.7,
+            color: "white",
+            padding: "8px 15px",
+            borderRadius: "5px",
+          },
         },
         {
           name: user.username.charAt(0).toUpperCase() + user.username.slice(1),
           link: "/movies",
           onClick: () => console.log(user, "SETTINGS PROFILE"),
           classes: "bg-black py-2 px-4  rounded-md",
-          styles: { color: "white" },
+          styles: { color: "white", opacity: 0.8 },
         },
       ]
     : [
         { name: "Home", link: "/movies" },
         { name: "Customers", link: "/customers" },
         { name: "Rentals", link: "/rentals" },
-        { name: "Login", link: "/login" },
-        { name: "Register", link: "/register" },
+        { name: "Sign in", link: "/login" },
+        { name: "Sign up", link: "/register" },
       ];
 
   return (
@@ -62,6 +84,7 @@ const Navbar = ({ user }) => {
         </div>
 
         <ul
+          ref={nav}
           className={` md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
             open ? "top-20 " : "top-[-490px]"
           }`}

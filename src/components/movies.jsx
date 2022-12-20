@@ -6,8 +6,8 @@ import { BeatLoader } from "react-spinners";
 import { getGenres } from "../services/genreService";
 import { deleteMovie, getMovies } from "../services/movieService";
 import { pagination } from "../utils/pagination";
-import ListGroup from "./common/listGroup";
-import SearchBox from "./common/searchBox";
+import ListGroup from "../common/list-group";
+import SearchBox from "../common/search-box";
 import MoviesTable from "./moviesTable";
 import Pagination from "./pagination";
 

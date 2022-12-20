@@ -1,7 +1,7 @@
 import Joi from "joi-browser";
 import { Component } from "react";
-import Input from "./input";
-import Select from "./select";
+import Input from "../input";
+import Select from "../select";
 
 export default class Form extends Component {
   state = {
@@ -66,9 +66,25 @@ export default class Form extends Component {
       <button
         disabled={this.validate()}
         type="submit"
-        className="w-full text-black  bg-yellow-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+        className="w-full text-black cursor-pointer  bg-yellow-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
       >
         {label}
+      </button>
+    );
+  }
+
+  renderSocialMediaButton(label, socialMediaIcon, onClick) {
+    return (
+      <button
+        onClick={onClick}
+        // disabled={this.validate()}
+        // type="submit"
+        className="w-full text-white flex justify-center items-center bg-red-500 hover:bg-primary-700 cursor-pointer focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+      >
+        <span className="mr-auto">
+          <ion-icon name={socialMediaIcon}></ion-icon>
+        </span>
+        <span className="mr-auto">{label}</span>
       </button>
     );
   }

@@ -1,9 +1,9 @@
 import React from "react";
-import Form from "../components/common/form";
+import Form from "../../common/form";
 import Joi from "joi-browser";
-import { getMovie, saveMovie } from "../services/movieService";
-import { getGenres } from "../services/genreService";
-import { withRouter } from "../hooks/withRouter";
+import { getMovie, saveMovie } from "../../services/movieService";
+import { getGenres } from "../../services/genreService";
+import { withRouter } from "../../hooks/withRouter";
 
 class MovieForm extends Form {
   state = {
@@ -18,17 +18,16 @@ class MovieForm extends Form {
     },
   };
 
+  // change architecture for something scalable
+  // login & register with google
+  // forgot password
   // todo: id is not allowed to be empty issue
   // asc and desc when click twice
-  // solve eslint
   // save and update movies in movieForm
   // register show message if the username already in the field of username
-  // make reusable protectedRouteComponent
-  // refacture the implementation of delete and link when auth
-  // responsive layouts
   // testing
   // storybook
-  // advanced section
+  // add typescript to the project
 
   schema = {
     _id: Joi.string(),
