@@ -1,8 +1,7 @@
 import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import logger from "./services/logService";
-import Movies from "./components/movies";
-import Navbar from "./components/navbar";
+import Navbar from "./layouts/navbar/navbar";
 import Customers from "./pages/customers";
 import Login from "./pages/login";
 import MovieForm from "./pages/movie-form";
@@ -10,6 +9,7 @@ import NotFound from "./pages/not-found";
 import Register from "./pages/register";
 import Rentals from "./pages/rentals";
 import UserContext from "./context/userContext";
+import Movies from "./pages/movies";
 
 logger.init();
 

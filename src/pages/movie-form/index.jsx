@@ -19,6 +19,15 @@ class MovieForm extends Form {
   };
 
   // change architecture for something scalable
+  // convert class components into functional one
+
+  // (
+  // login
+  // movies form
+  // register
+  // form
+  // )
+  // support mobile responsive and functionality
   // login & register with google
   // forgot password
   // todo: id is not allowed to be empty issue

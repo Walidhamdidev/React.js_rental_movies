@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import auth from "../services/authService";
+import auth from "../../services/authService";
 import { useEffect, useRef, useState } from "react";
 
 const Navbar = ({ user }) => {

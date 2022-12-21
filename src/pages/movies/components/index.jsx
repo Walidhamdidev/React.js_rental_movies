@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import Like from "../common/like";
-import Table from "../common/table";
-import UserContext from "../context/userContext";
+import Like from "../../../common/like";
+import Table from "../../../common/table";
+import UserContext from "../../../context/userContext";
 
 const MoviesTable = ({ movies, onSort, sortColumn, onLike, onDelete }) => {
   const { currentUser: user } = useContext(UserContext);
