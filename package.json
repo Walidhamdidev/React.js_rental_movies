@@ -1,5 +1,5 @@
 {
-  "name": "wordle",
+  "name": "movie_rental",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
