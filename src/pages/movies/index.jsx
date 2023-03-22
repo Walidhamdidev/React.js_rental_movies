@@ -31,7 +31,7 @@ const Movies = ({ user }) => {
 
   useEffect(() => {
     getData();
-  }, [movies]);
+  }, []);
 
   const handleLike = (movie) => {
     const allMovies = [...movies];
